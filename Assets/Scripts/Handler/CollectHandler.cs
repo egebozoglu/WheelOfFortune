@@ -144,15 +144,18 @@ namespace Handler
             // Add Reward to panel after show on the center
             AddressablesManager.Instance.ObjectRewardPrefabAssetReference.InstantiateAsync(rewardContainer.transform, false).Completed += (op) =>
             {
-                GameObject newReward = op.Result;
-            //newReward = Instantiate(rewardPrefab, rewardContainer.transform, false);
-            newReward.transform.SetAsFirstSibling();
-                newReward.GetComponentInChildren<Image>().sprite = rewardSprite;
-                newReward.GetComponentInChildren<Text>().text = rewardCount.ToString();
-                transform.GetComponent<AudioSource>().Play();
+                RewardCompleted(op, rewardSprite, rewardCount);
             };
         }
 
+        private void RewardCompleted(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj, Sprite rewardSprite, int rewardCount)
+        {
+            GameObject newReward = obj.Result;
+            newReward.transform.SetAsFirstSibling();
+            newReward.GetComponentInChildren<Image>().sprite = rewardSprite;
+            newReward.GetComponentInChildren<Text>().text = rewardCount.ToString();
+            transform.GetComponent<AudioSource>().Play();
+        }
         
     }
 }

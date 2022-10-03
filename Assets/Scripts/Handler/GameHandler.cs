@@ -206,17 +206,20 @@ namespace Handler
                 index = 1;
             }
 
-            GameObject wheel;
+            
             // Set wheelprefab
-            AddressablesManager.Instance.WheelAssetReferences[index].InstantiateAsync(wheelPanel, false).Completed += (op) =>
-             {
-                 wheel = op.Result;
-                 wheel.transform.SetAsFirstSibling();
-                 wheel.transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                 instantiatedWheels.Add(wheel);
-                 wheelHandler = wheel.transform.GetComponent<WheelHandler>();
-                 spinButton.gameObject.SetActive(true);
-             };
+            AddressablesManager.Instance.WheelAssetReferences[index].InstantiateAsync(wheelPanel, false).Completed += WheelPrefabCompleted;
+        }
+
+        private void WheelPrefabCompleted(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj)
+        {
+            GameObject wheel;
+            wheel = obj.Result;
+            wheel.transform.SetAsFirstSibling();
+            wheel.transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            instantiatedWheels.Add(wheel);
+            wheelHandler = wheel.transform.GetComponent<WheelHandler>();
+            spinButton.gameObject.SetActive(true);
         }
 
         #region Zone Panel
@@ -271,47 +274,58 @@ namespace Handler
             // If not exists, add now
             else
             {
-                AddressablesManager.Instance.ObjectRewardPrefabAssetReference.InstantiateAsync(RewardContainer.transform, false).Completed += async (op) =>
+                AddressablesManager.Instance.ObjectRewardPrefabAssetReference.InstantiateAsync(RewardContainer.transform, false).Completed += (op) =>
                 {
-                    GameObject newReward = op.Result;
-                    newReward.GetComponentInChildren<Image>().sprite = rewardSprite;
-                    newReward.GetComponentInChildren<Text>().text = "0";
-                    newReward.name = rewardName;
-                    await RewardAnimation(RewardContainer.transform.Find(rewardName).transform.GetChild(1).transform.GetComponent<RectTransform>().position, rewardSprite);
-                    animatedText = newReward.GetComponentInChildren<Text>();
-                    targetrewardText = rewardCount;
-                    textAnimationActive = true;
-                    Reward newRewardItem = new Reward();
-                    newRewardItem.Name = rewardName; newRewardItem.Sprite = rewardSprite; newRewardItem.Count = rewardCount;
-                    gainedRewards.Add(newRewardItem);
+                    RewardCompleted(op, rewardSprite, rewardCount, rewardName);
                 };
                 await Task.Delay(1200);
             }
         }
 
+        private async void RewardCompleted(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj, Sprite rewardSprite, int rewardCount, string rewardName)
+        {
+            GameObject newReward = obj.Result;
+            newReward.GetComponentInChildren<Image>().sprite = rewardSprite;
+            newReward.GetComponentInChildren<Text>().text = "0";
+            newReward.name = rewardName;
+            await RewardAnimation(RewardContainer.transform.Find(rewardName).transform.GetChild(1).transform.GetComponent<RectTransform>().position, rewardSprite);
+            animatedText = newReward.GetComponentInChildren<Text>();
+            targetrewardText = rewardCount;
+            textAnimationActive = true;
+            Reward newRewardItem = new Reward();
+            newRewardItem.Name = rewardName; newRewardItem.Sprite = rewardSprite; newRewardItem.Count = rewardCount;
+            gainedRewards.Add(newRewardItem);
+        }
+
         #endregion
 
-        
+
 
         #region Basic Code Animations
         async Task RewardAnimation(Vector3 targetPos, Sprite rewardSprite)
         {
             // Get object from addressables
-            AddressablesManager.Instance.ObjectRewardAnimationPrefabAssetReference.InstantiateAsync(IndicatorPosition).Completed += async (op) =>
+            AddressablesManager.Instance.ObjectRewardAnimationPrefabAssetReference.InstantiateAsync(IndicatorPosition).Completed +=  (op) =>
             {
-                GameObject rewardAnimation = op.Result;
-                rewardAnimation.transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                rewardAnimation.GetComponent<Image>().sprite = rewardSprite;
-                await Task.Delay(200);
-                rewardAnimation.GetComponent<RectTransform>().DOMove(targetPos, 1f);
-                await Task.Delay(1000);
-                Destroy(rewardAnimation);
+                RewardAnimationCompleted(op, rewardSprite, targetPos);
             };
             transform.GetComponent<AudioSource>().Play();
 
             // Await task until the wheel changing
             await Task.Delay(1200);
         }
+
+        private async void RewardAnimationCompleted(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj, Sprite rewardSprite, Vector3 targetPos)
+        {
+            GameObject rewardAnimation = obj.Result;
+            rewardAnimation.transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            rewardAnimation.GetComponent<Image>().sprite = rewardSprite;
+            await Task.Delay(200);
+            rewardAnimation.GetComponent<RectTransform>().DOMove(targetPos, 1f);
+            await Task.Delay(1000);
+            Destroy(rewardAnimation);
+        }
+
         void TextAnimation()
         {
             if (textAnimationActive)
