@@ -361,6 +361,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 93775465}
   m_CullTransparentMesh: 1
+--- !u!1 &171204029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 171204031}
+  - component: {fileID: 171204030}
+  m_Layer: 0
+  m_Name: sound_manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &171204030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171204029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 456ed55c8a809e141a255a2250f2b481, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &171204031
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171204029}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1291.8392, y: 899.3888, z: 7.934051}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &437005366
 GameObject:
   m_ObjectHideFlags: 0
@@ -2402,23 +2446,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 664a01792bd28ae49b098046cec6404a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoneLevel: 1
-  zonePrefab: {fileID: 3809793272131100665, guid: 49d5397bc1327da4698939ed845dc3e6, type: 3}
-  zoneContainer: {fileID: 629904792}
-  greenZone: {fileID: 21300000, guid: cb5fd978754e3f643b6933bf887265c6, type: 3}
-  zoneAnimation: 0
-  rewardContainer: {fileID: 1927971590}
+  ZoneLevel: 1
+  ZonePrefab: {fileID: 3809793272131100665, guid: 49d5397bc1327da4698939ed845dc3e6, type: 3}
+  ZoneContainer: {fileID: 629904792}
+  GreenZone: {fileID: 21300000, guid: cb5fd978754e3f643b6933bf887265c6, type: 3}
+  ZoneAnimation: 0
+  RewardContainer: {fileID: 1927971590}
   wheelPanel: {fileID: 2049672229}
-  indicatorPosition: {fileID: 14548074}
-  sound: On
+  IndicatorPosition: {fileID: 14548074}
   spinButton: {fileID: 896671485}
   collectButton: {fileID: 93775467}
   collectPopUpCollectButton: {fileID: 1966258005}
   collectPopUpGoBackButton: {fileID: 437882525}
   soundButton: {fileID: 770951457}
-  bombPopUp: {fileID: 904898371}
-  popUpRestartButton: {fileID: 1932743097}
-  collectPopUp: {fileID: 1812639575}
+  BombPopUp: {fileID: 904898371}
+  PopUpRestartButton: {fileID: 1932743097}
+  CollectPopUp: {fileID: 1812639575}
 --- !u!4 &1818519479
 Transform:
   m_ObjectHideFlags: 0
@@ -3308,7 +3351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baabc77b47fbf60478ca5329afbc3cb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wheelAssetReferences:
+  WheelAssetReferences:
   - m_AssetGUID: 2a37c6465341ce142a69fd1d9ab06f38
     m_SubObjectName: 
     m_SubObjectType: 
@@ -3321,17 +3364,17 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  objectRewardPrefabAssetReference:
+  ObjectRewardPrefabAssetReference:
     m_AssetGUID: 5c66a7122addf57458af8c0b96be6a34
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  objectRewardAnimationPrefabAssetReference:
+  ObjectRewardAnimationPrefabAssetReference:
     m_AssetGUID: fa9eea5e933140b42aba856a8de2ed93
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  soundtrackAssetReference:
+  SoundtrackAssetReference:
     m_AssetGUID: 89f7e10d204e2eb4b96923c2e3aa928b
     m_SubObjectName: 
     m_SubObjectType: 

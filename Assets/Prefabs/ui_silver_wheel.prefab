@@ -52,12 +52,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54abc67daf0a8fd43a3ffdbfeac11392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PickerWheelTransform: {fileID: 1409545135232959956}
+  pickerWheelTransform: {fileID: 0}
   wheelCircle: {fileID: 1409545135669777428}
   wheelContentPrefab: {fileID: 4809546166218246815, guid: a499e790b7af86341b8bdf5a2ce95a5d, type: 3}
   wheelContentsParent: {fileID: 1409545136663560573}
-  wheelContents: []
-  spinTime: 8
+  WheelContents: []
+  SpinTime: 8
 --- !u!82 &431137594
 AudioSource:
   m_ObjectHideFlags: 0

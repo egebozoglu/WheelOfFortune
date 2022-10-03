@@ -27,7 +27,7 @@ namespace Manager
 
         public AssetReference ObjectRewardAnimationPrefabAssetReference;
 
-        [SerializeField] private AssetReferenceAudioClip soundtrackAssetReference;
+        [SerializeField] public AssetReferenceAudioClip SoundtrackAssetReference;
 
         #endregion
 
@@ -54,30 +54,6 @@ namespace Manager
         private void AddressablesManager_Completed(AsyncOperationHandle<IResourceLocator> obj)
         {
             Debug.Log("Addressables Initialized.");
-
-            soundtrackAssetReference.LoadAssetAsync<AudioClip>().Completed += (op) =>
-            {
-                var audioSource = gameObject.AddComponent<AudioSource>();
-                audioSource.playOnAwake = false;
-                audioSource.loop = true;
-                audioSource.volume = 0.1f;
-                audioSource.clip = op.Result;
-                audioSource.Play();
-            };
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            // Check ound property to adjust volume
-            if (PlayerPrefs.GetString("Sound") == "Off")
-            {
-                AudioListener.volume = 0;
-            }
-            else
-            {
-                AudioListener.volume = 1;
-            }
         }
     }
 }

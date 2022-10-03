@@ -42,17 +42,49 @@ namespace Handler
         // Start is called before the first frame update
         void Start()
         {
+            if (AudioListener.volume == 0)
+            {
+                soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound Off";
+            }
+            else
+            {
+                soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound On";
+            }
+
             gainedRewards = GainedRewardsHandler.Instance.GainedRewards;
 
             ButtonListeners();
         }
 
+        void ButtonListeners()
+        {
+            #region Restart Button
+            restartButton.onClick.AddListener(() =>
+            {
+                SceneManager.LoadScene("GameScene");
+            });
+            #endregion
+
+            #region Sound Button
+            soundButton.onClick.AddListener(() =>
+            {
+                if (AudioListener.volume == 0)
+                {
+                    AudioListener.volume = 1;
+                    soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound On";
+                }
+                else
+                {
+                    AudioListener.volume = 0;
+                    soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound Off";
+                }
+            });
+            #endregion
+        }
+
         // Update is called once per frame
         async void Update()
         {
-            // Set Sound Button Text
-            soundButton.GetComponentInChildren<Text>().text = "Sound: " + PlayerPrefs.GetString("Sound");
-
             // Star Animation
             rewardBG.Rotate(new Vector3(0f, 0f, 100f) * Time.deltaTime);
 
@@ -121,28 +153,6 @@ namespace Handler
             };
         }
 
-        void ButtonListeners()
-        {
-            #region Restart Button
-            restartButton.onClick.AddListener(() =>
-            {
-                SceneManager.LoadScene("GameScene");
-            });
-            #endregion
-
-            #region Sound Button
-            soundButton.onClick.AddListener(() =>
-            {
-                if (PlayerPrefs.GetString("Sound") == "On")
-                {
-                    PlayerPrefs.SetString("Sound", "Off");
-                }
-                else
-                {
-                    PlayerPrefs.SetString("Sound", "On");
-                }
-            });
-            #endregion
-        }
+        
     }
 }
