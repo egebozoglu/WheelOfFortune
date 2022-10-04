@@ -34,6 +34,7 @@ namespace Wheel
         private Vector2 contentMaxSize = new Vector2(144f, 213f);
         private int contentsMin = 2;
         private int contentsMax = 8;
+        private int contentsAmount = 8;
 
         // Angle
         private float contentAngle;
@@ -49,6 +50,12 @@ namespace Wheel
         private AudioSource audioSource;
 
         private List<int> nonZeroDropRate = new List<int>();
+
+        // Rarity Properties
+        private string common = "Common";
+        private string normal = "Normal";
+        private string rare = "Rare";
+        private string bomb = "Bomb";
         #endregion
 
         private void Awake()
@@ -83,25 +90,25 @@ namespace Wheel
             // Choose 8 prizes according to WheelType => Bronze, Silver or Gold. Don't forget to add bomb to common class prizes.
             if (wheelType == "Bronze")
             {
-                var commonRewards = contentObjects.Where(x => x.RewardClass.ToString() == "Common").Where(x => x.Active == true).ToList();
+                var commonRewards = contentObjects.Where(x => x.RarityProperty == common).Where(x => x.Active == true).ToList();
                 Shuffle(commonRewards);
-                commonRewards = commonRewards.Take(7).ToList();
-                commonRewards.Add(contentObjects.Where(x => x.RewardClass.ToString() == "Bomb").FirstOrDefault());
+                commonRewards = commonRewards.Take(contentsAmount-1).ToList();
+                commonRewards.Add(contentObjects.Where(x => x.RarityProperty == bomb).FirstOrDefault());
                 Shuffle(commonRewards);
                 WheelContents = commonRewards;
             }
             else if (wheelType == "Silver")
             {
-                var normalPrizes = contentObjects.Where(x => x.RewardClass.ToString() == "Normal").Where(x => x.Active == true).ToList();
-                Shuffle(normalPrizes);
-                normalPrizes = normalPrizes.Take(8).ToList();
-                WheelContents = normalPrizes;
+                var normalRewards = contentObjects.Where(x => x.RarityProperty == normal).Where(x => x.Active == true).ToList();
+                Shuffle(normalRewards);
+                normalRewards = normalRewards.Take(contentsAmount).ToList();
+                WheelContents = normalRewards;
             }
             else // Gold
             {
-                var rareRewards = contentObjects.Where(x => x.RewardClass.ToString() == "Rare").Where(x => x.Active == true).ToList();
+                var rareRewards = contentObjects.Where(x => x.RarityProperty == rare).Where(x => x.Active == true).ToList();
                 Shuffle(rareRewards);
-                rareRewards = rareRewards.Take(8).ToList();
+                rareRewards = rareRewards.Take(contentsAmount).ToList();
                 WheelContents = rareRewards;
             }
         }

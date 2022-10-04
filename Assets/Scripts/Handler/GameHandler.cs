@@ -119,7 +119,7 @@ namespace Handler
                 Debug.Log("Spin Ended: " + wheelContent.Name + ", Count: " + wheelContent.RewardCount);
 
                 // Check if the reward is bomb or not
-                if (wheelContent.RewardClass.ToString() == "Bomb")
+                if (wheelContent.RarityProperty== "Bomb")
                 {
                     collectButton.gameObject.SetActive(false);
                     BombPopUp.SetActive(true);

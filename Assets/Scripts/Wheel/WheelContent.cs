@@ -13,20 +13,14 @@ namespace Wheel
         public int RewardCount;
         [Range(0f, 100f)]
         public float DropRate = 50f;
-        // Prize Rarity
-        public Classes RewardClass = new Classes();
-        // Prize available or not
+        // Reward available or not
         public bool Active = true;
+        // Reward Rarity
+        [SerializeField] private Rarity rarity;
+
+        public string RarityProperty { get { return rarity.RarityProperty; } }
 
         [HideInInspector] public int Index;
         [HideInInspector] public double Weight = 0f;
-
-        public enum Classes
-        {
-            Common,
-            Normal,
-            Rare,
-            Bomb
-        };
     }
 }

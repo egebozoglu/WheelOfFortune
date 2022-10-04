@@ -18,5 +18,6 @@ MonoBehaviour:
   DropRate: 20
   RewardClass: 3
   Active: 1
+  rarity: {fileID: 11400000, guid: fde32f0ea7fcb064696e2067ecdae9f8, type: 2}
   Index: 3
-  weight: 235
+  Weight: 0
