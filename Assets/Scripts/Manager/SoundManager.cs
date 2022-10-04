@@ -30,6 +30,7 @@ namespace Manager
 
         private void SoundManager_Completed(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<AudioClip> obj)
         {
+            // Create audio source and set properties
             var audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
             audioSource.loop = true;
