@@ -92,84 +92,84 @@ namespace Handler
 
         void ButtonListeners()
         {
-            #region Spin Button
-            spinButton.onClick.AddListener(() =>
+            spinButton.onClick.AddListener(SpinClick);
+            collectButton.onClick.AddListener(CollectClick);
+            collectPopUpCollectButton.onClick.AddListener(CollectPopUpCollectClick);
+            collectPopUpGoBackButton.onClick.AddListener(CollectPopUpGoBackClick);
+            PopUpRestartButton.onClick.AddListener(RestartClick);
+            soundButton.onClick.AddListener(SoundClick);
+        }
+
+        #region Button Voids
+        private void SpinClick()
+        {
+            // Start Spinning
+            wheelHandler.SpinStartAction(() =>
             {
-                wheelHandler.SpinStartAction(() =>
+                Debug.Log("Spin Started");
+                spinButton.gameObject.SetActive(false);
+            });
+            wheelHandler.SpinEndAction(async wheelContent =>
+            {
+                Debug.Log("Spin Ended: " + wheelContent.Name + ", Count: " + wheelContent.RewardCount);
+
+                // Check if the reward is bomb or not
+                if (wheelContent.RewardClass.ToString() == "Bomb")
                 {
-                    Debug.Log("Spin Started");
-                    spinButton.gameObject.SetActive(false);
-                });
-                wheelHandler.SpinEndAction(async wheelContent =>
-                {
-                    Debug.Log("Spin Ended: " + wheelContent.Name + ", Count: " + wheelContent.RewardCount);
-
-                    // Check if the reward is bomb or not
-                    if (wheelContent.RewardClass.ToString() == "Bomb")
-                    {
-                        collectButton.gameObject.SetActive(false);
-                        BombPopUp.SetActive(true);
-                        BombPopUp.GetComponent<AudioSource>().Play();
-                    }
-                    else
-                    {
-                        await AddReward(wheelContent.ContentIcon, wheelContent.RewardCount, wheelContent.Name);
-                        ZoneLevel++;
-                        SetWheelHandler();
-                        ZonePanelSlide();
-                    }
-                });
-                wheelHandler.SpinWheel();
-            });
-            #endregion
-
-            #region Collect Button
-            collectButton.onClick.AddListener(() =>
-            {
-                // Show Pop Up
-                CollectPopUp.SetActive(true);
-            });
-            #endregion
-
-            #region Collect PopUp Buttons
-            collectPopUpCollectButton.onClick.AddListener(() =>
-            {
-                // Take to the collection scene
-                GainedRewardsHandler.Instance.GainedRewards = gainedRewards;
-                SceneManager.LoadScene("CollectingScene");
-            });
-
-            collectPopUpGoBackButton.onClick.AddListener(() =>
-            {
-                // Close Pop Up
-                CollectPopUp.SetActive(false);
-            });
-            #endregion
-
-            #region Restart Button
-            PopUpRestartButton.onClick.AddListener(() =>
-            {
-                // Load Scene Again
-                SceneManager.LoadScene("GameScene");
-            });
-            #endregion
-
-            #region Sound Button
-            soundButton.onClick.AddListener(() =>
-            {
-                if (AudioListener.volume == 0)
-                {
-                    AudioListener.volume = 1;
-                    soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound On";
+                    collectButton.gameObject.SetActive(false);
+                    BombPopUp.SetActive(true);
+                    BombPopUp.GetComponent<AudioSource>().Play();
                 }
                 else
                 {
-                    AudioListener.volume = 0;
-                    soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound Off";
+                    await AddReward(wheelContent.ContentIcon, wheelContent.RewardCount, wheelContent.Name);
+                    ZoneLevel++;
+                    SetWheelHandler();
+                    ZonePanelSlide();
                 }
             });
-            #endregion
+            wheelHandler.SpinWheel();
         }
+
+        private void CollectClick()
+        {
+            // Show Collect Pop Up
+            CollectPopUp.SetActive(true);
+        }
+
+        private void CollectPopUpCollectClick()
+        {
+            // Take to the collection scene
+            GainedRewardsHandler.Instance.GainedRewards = gainedRewards;
+            SceneManager.LoadScene("CollectingScene");
+        }
+
+        private void CollectPopUpGoBackClick()
+        {
+            // Close Pop Up
+            CollectPopUp.SetActive(false);
+        }
+
+        private void RestartClick()
+        {
+            // Load Scene Again
+            SceneManager.LoadScene("GameScene");
+        }
+
+        private void SoundClick()
+        {
+            if (AudioListener.volume == 0)
+            {
+                AudioListener.volume = 1;
+                soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound On";
+            }
+            else
+            {
+                AudioListener.volume = 0;
+                soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound Off";
+            }
+        }
+        #endregion
 
 
         // Update is called once per frame
@@ -298,8 +298,6 @@ namespace Handler
         }
 
         #endregion
-
-
 
         #region Basic Code Animations
         async Task RewardAnimation(Vector3 targetPos, Sprite rewardSprite)

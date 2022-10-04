@@ -58,29 +58,31 @@ namespace Handler
 
         void ButtonListeners()
         {
-            #region Restart Button
-            restartButton.onClick.AddListener(() =>
-            {
-                SceneManager.LoadScene("GameScene");
-            });
-            #endregion
-
-            #region Sound Button
-            soundButton.onClick.AddListener(() =>
-            {
-                if (AudioListener.volume == 0)
-                {
-                    AudioListener.volume = 1;
-                    soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound On";
-                }
-                else
-                {
-                    AudioListener.volume = 0;
-                    soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound Off";
-                }
-            });
-            #endregion
+            restartButton.onClick.AddListener(RestartClick);
+            soundButton.onClick.AddListener(SoundClick);
         }
+
+        #region Button Voids
+        private void RestartClick()
+        {
+            // Load Main Game Scene
+            SceneManager.LoadScene("GameScene");
+        }
+
+        private void SoundClick()
+        {
+            if (AudioListener.volume == 0)
+            {
+                AudioListener.volume = 1;
+                soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound On";
+            }
+            else
+            {
+                AudioListener.volume = 0;
+                soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound Off";
+            }
+        }
+        #endregion
 
         // Update is called once per frame
         async void Update()
