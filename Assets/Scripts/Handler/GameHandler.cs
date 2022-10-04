@@ -56,6 +56,10 @@ namespace Handler
         [Header("Collect Section")]
         public GameObject CollectPopUp;
 
+        [Header("Sound Button Section")]
+        [SerializeField] private Text localizeSoundText;
+        [SerializeField] private Text soundPropertyText;
+        public string LocalizeSound;
         #endregion
 
         private void Awake()
@@ -70,13 +74,14 @@ namespace Handler
         // Start is called before the first frame update
         void Start()
         {
+            localizeSoundText.text = LocalizeSound;
             if (AudioListener.volume == 0)
             {
-                soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound Off";
+                soundPropertyText.text = "Off";
             }
             else
             {
-                soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound On";
+                soundPropertyText.text = "On";
             }
 
             ButtonListeners();
@@ -161,12 +166,12 @@ namespace Handler
             if (AudioListener.volume == 0)
             {
                 AudioListener.volume = 1;
-                soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound On";
+                soundPropertyText.text = "On";
             }
             else
             {
                 AudioListener.volume = 0;
-                soundButton.gameObject.GetComponentInChildren<Text>().text = "Sound Off";
+                soundPropertyText.text = "Off";
             }
         }
         #endregion
