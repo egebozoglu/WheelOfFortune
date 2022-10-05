@@ -35,6 +35,7 @@ namespace Handler
         private Text animatedText;
         private int targetrewardText;
         private bool textAnimationActive;
+        private int textStep = 10;
 
         [Header("Wheel Section")]
         private WheelHandler wheelHandler;
@@ -127,7 +128,8 @@ namespace Handler
                 }
                 else
                 {
-                    await AddReward(wheelContent.ContentIcon, wheelContent.RewardCount, wheelContent.Name);
+                    StartCoroutine(AddReward(wheelContent.ContentIcon, wheelContent.RewardCount, wheelContent.Name));
+                    await Task.Delay(1200);
                     ZoneLevel++;
                     SetWheelHandler();
                     ZonePanelSlide();
@@ -175,7 +177,6 @@ namespace Handler
             }
         }
         #endregion
-
 
         // Update is called once per frame
         void Update()
@@ -262,18 +263,18 @@ namespace Handler
         #endregion
 
         #region Reward Panel
-
-        public async Task AddReward(Sprite rewardSprite, int rewardCount, string rewardName)
+        private IEnumerator AddReward(Sprite rewardSprite, int rewardCount, string rewardName)
         {
             // Check existence of reward
             var reward = gainedRewards.Where(x => x.Name == rewardName).FirstOrDefault();
             if (reward != null)
             {
-                await RewardAnimation(RewardContainer.transform.Find(rewardName).transform.GetChild(1).GetComponent<RectTransform>().position, rewardSprite);
+                RewardAnimation(RewardContainer.transform.Find(rewardName).transform.GetChild(1).GetComponent<RectTransform>().position, rewardSprite);          
                 var count = reward.Count;
                 reward.Count = count + rewardCount;
                 animatedText = RewardContainer.transform.Find(rewardName).GetComponentInChildren<Text>();
                 targetrewardText = reward.Count;
+                yield return new WaitForSeconds(1.2f);
                 textAnimationActive = true;
             }
             // If not exists, add now
@@ -281,21 +282,22 @@ namespace Handler
             {
                 AddressablesManager.Instance.ObjectRewardPrefabAssetReference.InstantiateAsync(RewardContainer.transform, false).Completed += (op) =>
                 {
-                    RewardCompleted(op, rewardSprite, rewardCount, rewardName);
+                    StartCoroutine(RewardCompleted(op, rewardSprite, rewardCount, rewardName));
                 };
-                await Task.Delay(1200);
+                yield return new WaitForSeconds(1.2f);
             }
         }
 
-        private async void RewardCompleted(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj, Sprite rewardSprite, int rewardCount, string rewardName)
+        private IEnumerator RewardCompleted(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj, Sprite rewardSprite, int rewardCount, string rewardName)
         {
             GameObject newReward = obj.Result;
             newReward.GetComponentInChildren<Image>().sprite = rewardSprite;
             newReward.GetComponentInChildren<Text>().text = "0";
             newReward.name = rewardName;
-            await RewardAnimation(RewardContainer.transform.Find(rewardName).transform.GetChild(1).transform.GetComponent<RectTransform>().position, rewardSprite);
+            RewardAnimation(RewardContainer.transform.Find(rewardName).transform.GetChild(1).transform.GetComponent<RectTransform>().position, rewardSprite);
             animatedText = newReward.GetComponentInChildren<Text>();
             targetrewardText = rewardCount;
+            yield return new WaitForSeconds(1.2f);
             textAnimationActive = true;
             Reward newRewardItem = new Reward();
             newRewardItem.Name = rewardName; newRewardItem.Sprite = rewardSprite; newRewardItem.Count = rewardCount;
@@ -305,35 +307,32 @@ namespace Handler
         #endregion
 
         #region Basic Code Animations
-        async Task RewardAnimation(Vector3 targetPos, Sprite rewardSprite)
+        private void RewardAnimation(Vector3 targetPos, Sprite rewardSprite)
         {
             // Get object from addressables
-            AddressablesManager.Instance.ObjectRewardAnimationPrefabAssetReference.InstantiateAsync(IndicatorPosition).Completed +=  (op) =>
+            AddressablesManager.Instance.ObjectRewardAnimationPrefabAssetReference.InstantiateAsync(IndicatorPosition).Completed += (op) =>
             {
-                RewardAnimationCompleted(op, rewardSprite, targetPos);
+                StartCoroutine(RewardComplete(op, rewardSprite, targetPos));
             };
             transform.GetComponent<AudioSource>().Play();
-
-            // Await task until the wheel changing
-            await Task.Delay(1200);
         }
 
-        private async void RewardAnimationCompleted(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj, Sprite rewardSprite, Vector3 targetPos)
+        private IEnumerator RewardComplete(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj, Sprite rewardSprite, Vector3 targetPos)
         {
             GameObject rewardAnimation = obj.Result;
             rewardAnimation.transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
             rewardAnimation.GetComponent<Image>().sprite = rewardSprite;
-            await Task.Delay(200);
+            yield return new WaitForSeconds(0.2f);
             rewardAnimation.GetComponent<RectTransform>().DOMove(targetPos, 1f);
-            await Task.Delay(1000);
+            yield return new WaitForSeconds(1f);
             Destroy(rewardAnimation);
         }
 
-        void TextAnimation()
+        private void TextAnimation()
         {
             if (textAnimationActive)
             {
-                animatedText.text = (int.Parse(animatedText.text) + 10).ToString();
+                animatedText.text = (int.Parse(animatedText.text) + textStep).ToString();
 
                 if (int.Parse(animatedText.text) >= targetrewardText)
                 {

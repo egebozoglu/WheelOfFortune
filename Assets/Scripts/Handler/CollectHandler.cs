@@ -91,20 +91,20 @@ namespace Handler
         #endregion
 
         // Update is called once per frame
-        async void Update()
+        void Update()
         {
             // Star Animation
             rewardBG.Rotate(new Vector3(0f, 0f, 100f) * Time.deltaTime);
 
-            await RewardAnimation();
+            StartCoroutine(RewardAnimation());
         }
 
-        async Task RewardAnimation()
+        private IEnumerator RewardAnimation()
         {
             // Wait a little bit on load
             if (firstLoad)
             {
-                await Task.Delay(500);
+                yield return new WaitForSeconds(0.5f);
                 firstLoad = false;
                 if (rewardObject != null)
                     rewardObject.SetActive(true);
