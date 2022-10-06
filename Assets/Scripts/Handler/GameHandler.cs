@@ -96,7 +96,7 @@ namespace Handler
             InvokeRepeating("TextAnimation", 0.0f, 0.000015f);
         }
 
-        void ButtonListeners()
+        private void ButtonListeners()
         {
             spinButton.onClick.AddListener(SpinClick);
             collectButton.onClick.AddListener(CollectClick);
@@ -188,7 +188,7 @@ namespace Handler
             }
         }
 
-        void SetWheelHandler()
+        private void SetWheelHandler()
         {
             // Clear old wheels
             if (instantiatedWheels.Count != 0)
@@ -231,7 +231,7 @@ namespace Handler
         #region Zone Panel
 
         // Change zone level panel according to zoneLevel variable
-        void SetZonePanel()
+        private void SetZonePanel()
         {
             // As the zone progresses, new zone cards will be created according to ranges
             for (int i = minZone; i < minZone + 20; i++)

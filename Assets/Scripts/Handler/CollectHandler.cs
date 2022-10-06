@@ -62,7 +62,7 @@ namespace Handler
             ButtonListeners();
         }
 
-        void ButtonListeners()
+        private void ButtonListeners()
         {
             restartButton.onClick.AddListener(RestartClick);
             soundButton.onClick.AddListener(SoundClick);
@@ -125,7 +125,7 @@ namespace Handler
             }
         }
 
-        void ShowRewardsInOrder()
+        private void ShowRewardsInOrder()
         {
             rewardTime += Time.deltaTime;
             if (rewardTime > rewardRate)
@@ -147,7 +147,7 @@ namespace Handler
             }
         }
 
-        void AddReward(Sprite rewardSprite, int rewardCount)
+        private void AddReward(Sprite rewardSprite, int rewardCount)
         {
             // Add Reward to panel after show on the center
             AddressablesManager.Instance.ObjectRewardPrefabAssetReference.InstantiateAsync(rewardContainer.transform, false).Completed += (op) =>

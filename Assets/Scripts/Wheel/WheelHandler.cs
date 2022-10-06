@@ -113,7 +113,7 @@ namespace Wheel
             }
         }
 
-        void Shuffle<T>(List<T> list)
+        private void Shuffle<T>(List<T> list)
         {
             int n = list.Count;
             while (n > 1)
