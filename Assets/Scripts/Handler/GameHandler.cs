@@ -26,8 +26,10 @@ namespace Handler
         private int minZone = 1;
         public bool ZoneAnimation = false;
         private float nextTargetRectX = -140f;
+        private float zoneStep = 140f; // zone panel slide step
         private int safeZone = 5;
         private int superZone = 30;
+        private int zoneRangeStep = 20; // range for instantiated new zones
 
         [Header("Reward Section")]
         private List<Reward> gainedRewards = new List<Reward>();
@@ -36,6 +38,8 @@ namespace Handler
         private int targetrewardText;
         private bool textAnimationActive;
         private int textStep = 10;
+        private float textAnimationTime = 0.0f;
+        private float textAnimationRate = 0.000015f;
 
         [Header("Wheel Section")]
         private WheelHandler wheelHandler;
@@ -93,7 +97,8 @@ namespace Handler
             // Set top panel
             SetZonePanel();
 
-            InvokeRepeating("TextAnimation", 0.0f, 0.000015f);
+            // Call function in a certain frame
+            InvokeRepeating("TextAnimation", textAnimationTime, textAnimationRate);
         }
 
         private void ButtonListeners()
@@ -234,7 +239,7 @@ namespace Handler
         private void SetZonePanel()
         {
             // As the zone progresses, new zone cards will be created according to ranges
-            for (int i = minZone; i < minZone + 20; i++)
+            for (int i = minZone; i < minZone + zoneRangeStep; i++)
             {
                 GameObject zone;
 
@@ -246,7 +251,7 @@ namespace Handler
                     zone.gameObject.GetComponent<Image>().sprite = GreenZone;
                 }
             }
-            minZone += 20;
+            minZone += zoneRangeStep;
         }
 
         public void ZonePanelSlide()
@@ -257,7 +262,7 @@ namespace Handler
                 SetZonePanel();
             }
             ZoneContainer.transform.GetComponent<RectTransform>().DOAnchorPosX(nextTargetRectX, 0.5f); // As the zone advances, the panel will slide to the left.
-            nextTargetRectX -= 140f;
+            nextTargetRectX -= zoneStep;
         }
 
         #endregion

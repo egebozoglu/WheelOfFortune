@@ -37,6 +37,7 @@ namespace Handler
         private float rewardTime = 0f;
         private float rewardRate = 2.4f;
         private bool animationOn = true;
+        private float rotateRewardZAxis = 100f;
 
         [Header("Sound Button Section")]
         [SerializeField] private Text localizeSoundText;
@@ -94,7 +95,7 @@ namespace Handler
         void Update()
         {
             // Star Animation
-            rewardBG.Rotate(new Vector3(0f, 0f, 100f) * Time.deltaTime);
+            rewardBG.Rotate(new Vector3(0f, 0f, rotateRewardZAxis) * Time.deltaTime);
 
             StartCoroutine(RewardAnimation());
         }
