@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System;
-using Wheel;
-using Manager;
-using Model;
+using WheelOfFortune.Model;
+using WheelOfFortune.Wheel;
+using WheelOfFortune.Manager;
 
-namespace Handler
+namespace WheelOfFortune.Handler
 {
     public class GameHandler : MonoBehaviour
     {

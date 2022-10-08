@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Linq;
 
-namespace Wheel
+namespace WheelOfFortune.Wheel
 {
     public class WheelHandler : MonoBehaviour
     {

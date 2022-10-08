@@ -5,10 +5,10 @@ using DG.Tweening;
 using System.Threading.Tasks;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Manager;
-using Model;
+using WheelOfFortune.Model;
+using WheelOfFortune.Manager;
 
-namespace Handler
+namespace WheelOfFortune.Handler
 {
 
     public class CollectHandler : MonoBehaviour

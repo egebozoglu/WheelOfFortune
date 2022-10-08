@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Model;
+using WheelOfFortune.Model;
 
-namespace Handler
+namespace WheelOfFortune.Handler
 {
     public class GainedRewardsHandler : MonoBehaviour
     {

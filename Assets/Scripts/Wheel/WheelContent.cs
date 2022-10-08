@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace Wheel
+namespace WheelOfFortune.Wheel
 {
     [CreateAssetMenu(menuName = "Wheel Contents/Content", fileName = "Content Item")]
     public class WheelContent : ScriptableObject
